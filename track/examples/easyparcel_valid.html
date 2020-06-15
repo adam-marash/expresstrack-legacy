@@ -1,0 +1,427 @@
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+</script> 
+
+<style>
+.easytrack_num {
+	background-color: #666 !important; 
+	color: #fff !important;
+}
+.swal2-modal hr {height: 0px;}
+</style>
+<script>
+function mapping(){
+	if("Poslaju" == "MatDespatch" || "Poslaju" == "PostoExpress" || "Poslaju" == "Zepto Express"){ //check
+ use of google map
+		if("[:pickupLocation:]" != "--"){
+			$('.container').find('.googlemap').append("<div id='map-canvas' style='width: 90%; height: 400px;
+ margin:auto; margin-bottom:20px;'></div>");
+			start("[:pickupLocation:]","[:dropOffLocation:]","[:seperateCurrent1:]","[:seperateCurrent2:]","[
+:seperateDespatch1:]","[:seperateDespatch2:]","[:delivery:]","[:despatch:]");
+		}
+	}else{
+		$('.container').find('.googlemap').empty(); //close google map div if exist 
+	}
+}
+
+var directionsDisplay;
+var directionsService = new google.maps.DirectionsService();
+var map = "";
+function initialize(pickup,drop,seperateCurrent1,seperateCurrent2,seperateDespatch1,seperateDespatch2
+,deliverymark,despatchmark) {
+	var deliveryLocation = new google.maps.LatLng(seperateCurrent1,seperateCurrent2);
+	var despatchLocation = new google.maps.LatLng(seperateDespatch1,seperateDespatch2);
+	if(seperateCurrent1 == seperateDespatch1 && seperateCurrent2 == seperateDespatch2){
+		despatchmark = deliverymark;
+	}
+    directionsDisplay = new google.maps.DirectionsRenderer();
+    var mapOptions = {
+        zoom: 11,
+		 minZoom: 8, maxZoom: 19,
+        center: deliveryLocation,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+	if(!map){
+		map =new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+	}
+	else{
+		map.setOptions(mapOptions);
+	}
+	
+	var deliveryMarker = new google.maps.Marker({
+		position: deliveryLocation, 
+		map: map,
+		icon: deliverymark
+	});
+	
+	var despatchMarker = new google.maps.Marker({
+		position: despatchLocation,
+		map: map,
+		icon: despatchmark
+	});
+	//map.setOptions({ minZoom: 8, maxZoom: 19 });
+	directionsDisplay.setMap(map);
+	deliveryMarker.setMap(map);
+	despatchMarker.setMap(map);
+	calcRoute(pickup,drop);
+	window.setTimeout(function() {
+        var center = map.getCenter();
+        window.google.maps.event.trigger(map, 'resize');
+        map.setCenter(deliveryLocation);
+    }, 100)
+}
+
+function calcRoute(pickup,drop) {
+    var request = {
+        origin: pickup,
+        destination: drop,
+        travelMode: google.maps.DirectionsTravelMode.DRIVING
+    };
+    directionsService.route(request, function (response, status) {
+        if (status == google.maps.DirectionsStatus.OK) {
+			directionsDisplay.setOptions({ preserveViewport: true });
+            directionsDisplay.setDirections(response);
+        }
+    });
+}
+function start(pickup,drop,seperateCurrent1,seperateCurrent2,seperateDespatch1,seperateDespatch2,deliverymarker
+,despatchmarker){
+	google.maps.event.addDomListener(window, 'load', initialize(pickup,drop,seperateCurrent1,seperateCurrent2
+,seperateDespatch1,seperateDespatch2,deliverymarker,despatchmarker));
+}
+mapping();
+</script>
+<div class="container space">
+  <div class="container-fluid">
+    <div class="text-center">
+      <h2>EN288430060MY</h2>
+    </div>
+    <br>
+    <div class="panel panel-default">
+      <div class="panel-body text-center courier_title">
+        <div style="vertical-align: top;"> <img src="http://secure.easyparcel.my/pass/Live_1.5.0.0/Support
+/Template/easyParcel/images/easyTrack/Poslaju_logo.jpg" style=" border: 1px solid #eee; border-radius
+: 5px; height: 65px;"> </div>
+        <div> <span style="font-size: 24px;">Poslaju</span><br>
+           
+        </div>
+        <br>
+        <div  class="latest_statuspoint__content AWB_locationDetails_more">
+          <button class='btn btn-primary btn-sm' onclick="TrackEmail('http://secure.easyparcel.my/pass
+/?pg=Track&t=Poslaju/EN288430060MY','EN288430060MY')" title="Send Email To Receiver" data-toggle="tooltip"
+>Send Email</button>
+          <button class="btn btn-warning btn-sm" onclick="copyToClipboard('clip-EN288430060MY')" title
+="Copy URL" data-toggle="tooltip"><i class="epi-box"></i> Copy</button>
+          <input type='hidden' id="clip-EN288430060MY" value="http://secure.easyparcel.my/pass/?pg=Track
+&t=Poslaju/EN288430060MY"></input>
+          <div class="btn fb-share-button btn-default FB-share-btn btn-sm" data-href="http://secure.easyparcel
+.my/pass/?pg=Track&t=Poslaju/EN288430060MY" data-layout="button" style="background-color: #4267b2; color
+:#fff;"></div>
+        </div>
+      </div>
+      
+      
+      <div class="panel-body text-center" style="background-color: #f39c12;">
+        <h4 style="color: #fff;">Item out for delivery</h4>
+      </div>
+       
+      
+      
+      <div class="panel-body">
+        <div class="col-md-offset-4 col-md-8 statuspoints" style=" position: relative; ">
+          <ul class="statuspoints__list" style="list-style: none; margin: 0; padding: 0;">
+            
+            <li class="statuspoint">
+              <div class="statuspoint__time"><strong>2016-10-17</strong>
+                <div class="hint">13:06 PM</div>
+              </div>
+              <div class="statuspoint__icon outfordelivery"></div>
+              <div class="statuspoint__content"> <strong>Item out for delivery <span class="statuspoint__courier-name
+ hidden-xs">Poslaju</span></strong>
+                <div class="hint">Maran PO</div>
+              </div>
+            </li>
+            
+            <li class="statuspoint">
+              <div class="statuspoint__time"><strong>2016-10-17</strong>
+                <div class="hint">12:48 PM</div>
+              </div>
+              <div class="statuspoint__icon delivered"></div>
+              <div class="statuspoint__content"> <strong>Item delivered to   to SITI HABILAH<span class
+="statuspoint__courier-name hidden-xs">Poslaju</span></strong>
+                <div class="hint">Maran PO</div>
+              </div>
+            </li>
+            
+            <li class="statuspoint">
+              <div class="statuspoint__time"><strong>2016-10-12</strong>
+                <div class="hint">15:12 PM</div>
+              </div>
+              <div class="statuspoint__icon intransit"></div>
+              <div class="statuspoint__content"> <strong>Arrive at delivery facility at <span class="statuspoint__courier-name
+ hidden-xs">Poslaju</span></strong>
+                <div class="hint">Maran PO</div>
+              </div>
+            </li>
+            
+            <li class="statuspoint">
+              <div class="statuspoint__time"><strong>2016-10-12</strong>
+                <div class="hint">06:56 AM</div>
+              </div>
+              <div class="statuspoint__icon intransit"></div>
+              <div class="statuspoint__content"> <strong>Arrive at delivery facility at <span class="statuspoint__courier-name
+ hidden-xs">Poslaju</span></strong>
+                <div class="hint">Pos Laju Temerloh </div>
+              </div>
+            </li>
+            
+            <li class="statuspoint">
+              <div class="statuspoint__time"><strong>2016-10-12</strong>
+                <div class="hint">02:37 AM</div>
+              </div>
+              <div class="statuspoint__icon outfordelivery"></div>
+              <div class="statuspoint__content"> <strong>Consignment dispatch out from Transit Office
+ <span class="statuspoint__courier-name hidden-xs">Poslaju</span></strong>
+                <div class="hint">Pos Laju Kuantan </div>
+              </div>
+            </li>
+            
+            <li class="statuspoint">
+              <div class="statuspoint__time"><strong>2016-10-12</strong>
+                <div class="hint">02:37 AM</div>
+              </div>
+              <div class="statuspoint__icon intransit"></div>
+              <div class="statuspoint__content"> <strong>Item processed <span class="statuspoint__courier-name
+ hidden-xs">Poslaju</span></strong>
+                <div class="hint">Pos Laju Kuantan </div>
+              </div>
+            </li>
+            
+            <li class="statuspoint">
+              <div class="statuspoint__time"><strong>2016-10-11</strong>
+                <div class="hint">19:55 PM</div>
+              </div>
+              <div class="statuspoint__icon outfordelivery"></div>
+              <div class="statuspoint__content"> <strong>Item dispatched out <span class="statuspoint__courier-name
+ hidden-xs">Poslaju</span></strong>
+                <div class="hint">Pos Laju K. Terengganu </div>
+              </div>
+            </li>
+            
+            <li class="statuspoint">
+              <div class="statuspoint__time"><strong>2016-10-11</strong>
+                <div class="hint">16:35 PM</div>
+              </div>
+              <div class="statuspoint__icon intransit"></div>
+              <div class="statuspoint__content"> <strong>Item posted over the counter <span class="statuspoint__courier-name
+ hidden-xs">Poslaju</span></strong>
+                <div class="hint">Pos Laju K. Terengganu </div>
+              </div>
+            </li>
+            
+          </ul>
+        </div>
+      </div>
+      
+      
+      <div id="resultOrder"></div>
+      <div class="googlemap"></div>
+    </div>
+  </div>
+</div>
+<script>
+$( "tr:last-child" ).addClass('tr-last');
+</script> 
+
+
+<div class="sendEmail_sub" style="display:none;margin-top:1%;">
+  <div class="body">
+		<div class='row' style="margin-bottom:5px"><p class="col-sm-5 control-label">Sender Name</p><div class
+='col-sm-7'><input type="text" id="senderName_sub" name="senderName_sub" class="form-control" placeholder
+="Enter Sender Name" title="Please Enter Valid Sender Name" value="" required></div>
+        </div>
+		<div class='row' style="margin-bottom:5px"><p class="col-sm-5 control-label">Sender Email</p><div class
+='col-sm-7'><input type="text" id="senderMail_sub" name="senderMail_sub" class="form-control" placeholder
+="Enter Sender Email" title="Please Enter Valid Sender Email" value="" required></div>
+		</div>
+		<div class='row' style="margin-bottom:5px"><p class="col-sm-5 control-label">Receiver Name</p><div
+ class='col-sm-7'><input type="text" id="receiverName_sub" name="receiverName_sub" class="form-control"
+ placeholder="Enter Receiver Name" title="Please Enter Valid Receiver Name" value="" required></div>
+
+		</div>
+		<div class='row' style="margin-bottom:5px"><p class="col-sm-5 control-label">Receiver Email</p><div
+ class='col-sm-7'><input type="text" id="receiverMail_sub" name="receiverMail_sub" class="form-control"
+ placeholder="Enter Receiver Email" title="Please Enter Valid Receiver Email" value="" required></div
+>
+		</div>
+		<div class='row'><p class="col-sm-5 control-label" style="margin-top:5px">What Is 9 + 15 ? </p><div
+ class='col-sm-7'><input type="text" id="verifyHuman_sub" name="verifyHuman_sub" class="form-control"
+ placeholder="Enter Answer" title="Please The Answer Of The Question" value="" required></div>
+		</div><input type="hidden" id="Username_sub" name="Username_sub" value=""/><input type="hidden" id
+="Username2_sub" name="Username2_sub" value="[:num3:]"/>
+	</div>
+</div>
+<div id="email_sub"></div>
+<script>
+$(function(){
+	$('[data-toggle="tooltip"]').tooltip();
+});
+
+function copyToClipboard(id){
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val($('#'+id).val()).select();
+    success = document.execCommand("copy");
+    $temp.remove();
+	if(success){
+		$('#'+id).attr('title','Copied').addClass('on');
+		swal({
+			title: 'Success',
+			type: 'success',
+			html: 'Copied to clipboard',
+			confirmButtonColor: '#4e97d8'
+			})
+	}
+}
+
+function TrackEmail(link,awb){
+	body=$(".sendEmail_sub .body").html();
+	body=body.replace("senderMail_sub", 'senderMail2_sub');
+	body=body.replace("senderName_sub", 'senderName2_sub');
+	body=body.replace("receiverMail_sub", 'receiverMail2_sub');
+	body=body.replace("receiverName_sub", 'receiverName2_sub');
+	body=body.replace("emailMessage_sub", 'emailMessage2_sub');
+	body=body.replace("verifyHuman_sub", 'verifyHuman2_sub');
+	swal({
+		  title: 'Email This Shipment Status',
+		  text: "" + body,
+		  showCancelButton: true,
+		  confirmButtonColor: '#4e97d8',
+		  confirmButtonText: 'Okay',
+		  cancelButtonText: 'Cancel'
+			}).then(function() {
+				sendMail(link);
+			}, function(dismiss) {
+			  if (dismiss === 'cancel') {
+				$( this ).dialog( "close" );
+			  }
+		})
+}
+
+function sendMail(urlParam){
+	senderMail = ($("#senderMail2_sub").val());
+	senderName = ($("#senderName2_sub").val());
+	receiverMail = ($("#receiverMail2_sub").val());
+	receiverName = ($("#receiverName2_sub").val());
+	Username = ($("#Username_sub").val());
+	Username2 = "24";
+	verifyHuman = ($("#verifyHuman2_sub").val());
+	emailContent2 = urlParam;
+	if(Username == ""){
+		if(senderMail.trim()=="" || senderName.trim()=="" || receiverMail.trim()=="" || receiverName.trim(
+)==""){
+			swal({
+				title: 'Oops',
+				type: 'error',
+				html: 'Please Provide Your Details And Receiver Details.',
+				confirmButtonColor: '#4e97d8'
+				})
+		}else if(!ValidateEmail(senderMail)){
+			swal({
+				title: 'Oops',
+				type: 'error',
+				html: 'Sender Email Format Is Invalid',
+				confirmButtonColor: '#4e97d8'
+				})
+		}else if(!ValidateEmail(receiverMail)){
+			swal({
+				title: 'Oops',
+				type: 'error',
+				html: 'Receiver Email Format Is Invalid',
+				confirmButtonColor: '#4e97d8'
+				})
+		}else if(verifyHuman.trim()==""){
+			swal({
+				title: 'Oops',
+				type: 'error',
+				html: 'Please Fill In The Question Answer.',
+				confirmButtonColor: '#4e97d8'
+				})
+		}else{
+			if(verifyHuman == Username2){
+				var type = "post",
+				url = "./?ac=doSendTrackMail",
+				data = {
+					senderName : senderName,
+					sender : senderMail,
+					receiverName : receiverName,
+					receiver : receiverMail,
+					emailContent : emailContent2
+				},
+				callback = function(result){
+					if(result == "pass"){
+						swal({
+							title: 'Success',
+							type: 'success',
+							html: 'Your message has been sent.',
+							confirmButtonColor: '#4e97d8'
+							}).then(function(){
+								window.location.reload();
+							})
+					}else{
+						swal({
+							title: 'Oops',
+							type: 'error',
+							html: '' + result,
+							confirmButtonColor: '#4e97d8'
+							}).then(function(){
+								window.location.reload();
+							})
+					}
+				};
+				swal({
+					  title: 'Email This Shipment Status',
+					  text: '<div align="center"><b>Email Sending In Progress...</b></div>',
+					  showCancelButton: true,
+					  showConfirmButton: false,
+					  cancelButtonText: 'Cancel'
+						}).then(function() {
+							$( this ).dialog( "close" );
+						}, function(dismiss) {
+						  if (dismiss === 'cancel') {
+							$( this ).dialog( "close" );
+						  }
+					})
+				General.loadAjax(type,url,data,callback);
+			}else{
+				swal({
+					title: 'Oops',
+					type: 'error',
+					html: 'Wrong Answer.',
+					confirmButtonColor: '#4e97d8'
+					})
+			}
+		}
+	}else{
+		swal({
+			title: 'Oops',
+			type: 'error',
+			html: 'Invalid Access.',
+			confirmButtonColor: '#4e97d8'
+			})
+	}
+}
+
+function ValidateEmail(mail){  
+	if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)){  
+		return (true)
+	}  
+    return (false)  
+}
+</script>

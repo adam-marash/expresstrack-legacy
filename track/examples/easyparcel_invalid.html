@@ -1,0 +1,269 @@
+<style>
+.btn-default.FB-share-btn {
+	border-color: #12419e;
+}
+</style>
+
+
+<script>
+if($('.col-md-2 .AWB_eTrack').children().length > 0){
+	$("<li role='presentation' class=''><a href='#awb' onclick="+"scroll('awb')"+" aria-controls='awb' role
+='tab' data-toggle='tab' aria-expanded='false'>All AWB <span class='badge'>1</span></a></li>").appendTo
+($('.col-md-2 .AWB_eTrack'));
+}else{
+	$("<li role='presentation' class='active'><a href='#awb' onclick="+"scroll('awb')"+"  aria-controls
+='awb' role='tab' data-toggle='tab' aria-expanded='false'>All AWB <span class='badge'>1</span></a></li
+>").appendTo($('.col-md-2 .AWB_eTrack'));
+	$('#awb').addClass('active');
+}
+</script>
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="awb">
+		<div class="panel panel-default">
+			<div class="panel-body text-center courier_title" style="background-color: #f5f5f5;">
+				<div> <h3>EN288430060XMY</h3></div>
+			</div>
+			<div class="panel-body text-center" style="background-color: #bbb;">
+				<h4 style="color: #fff;">No courier is match with your airwaybill in our system.</h4>
+			</div>
+			<div class="panel-body text-center">
+				Please make sure the Airwaybill key in is correct.<br>
+				<small><a href="./?pg=EasyTrack" target="_blank">Click Here to track other Airwaybill</a></small
+>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div id="dialog"></div>
+<div id="email"></div>
+
+<!-- <div class="sendEmail" style="display:none;margin-top:10%;">
+	<div class="body">
+		<div class='row' style="margin-bottom:5px"><p class="col-sm-5 control-label">Sender Name</p><div class
+='col-sm-7'><input type="text" id="senderName" name="senderName" class="form-control" placeholder="Enter
+ Sender Name" title="Please Enter Valid Sender Name" value="" required></div>
+        </div>
+		<div class='row' style="margin-bottom:5px"><p class="col-sm-5 control-label">Sender Email</p><div class
+='col-sm-7'><input type="text" id="senderMail" name="senderMail" class="form-control" placeholder="Enter
+ Sender Email" title="Please Enter Valid Sender Email" value="" required></div>
+		</div>
+		<div class='row' style="margin-bottom:5px"><p class="col-sm-5 control-label">Receiver Name</p><div
+ class='col-sm-7'><input type="text" id="receiverName" name="receiverName" class="form-control" placeholder
+="Enter Receiver Name" title="Please Enter Valid Receiver Name" value="" required></div>
+		</div>
+		<div class='row' style="margin-bottom:5px"><p class="col-sm-5 control-label">Receiver Email</p><div
+ class='col-sm-7'><input type="text" id="receiverMail" name="receiverMail" class="form-control" placeholder
+="Enter Receiver Email" title="Please Enter Valid Receiver Email" value="" required></div>
+		</div>
+		<div class='row'>
+			<p class="col-sm-5 control-label" style="margin-top:5px">What Is 3 + 5 ? </p>
+			<div class='col-sm-7'>
+				<input type="text" id="verifyHuman" name="verifyHuman" class="form-control" placeholder="Enter Answer"
+ 
+				title="Please The Answer Of The Question" value="" required>
+			</div>
+		</div>
+		<input type="hidden" id="Username" name="Username" value=""/>
+		<input type="hidden" id="Username2" name="Username2" value="8"/>
+	</div>
+</div> -->
+
+<script>
+
+
+
+
+function showAjaxTrackResult(courierID){
+	$("#loading1").html("<div class='text-center'><h2><br>Tracking In Progress</h2><br><h1><i class='epi-spin4
+ selector__glyph-inner animate-spin'></i></h1></div>").show();
+	$('#awb #selectCourier').hide();
+	
+	var awb = "EN288430060XMY";
+	if(awb.indexOf("/") > -1){
+		if(awb.slice(-1) == '/'){
+			awb = awb.slice(0,-1);
+		}
+		if(awb.charAt(0) == '/'){
+			awb = awb.substr(1);
+		}
+		var key = awb.split('/');
+		var input = key.join(',');
+		$.ajax({
+			type: "POST",
+			url: "./?ac=doTrackMultipleAWB",//doTrackStatus
+			data : {
+				key : input,
+				courier : courierID,
+				layout	: 0			},
+			success: function(result){
+				showResult(result);
+			}
+		});
+	}else{
+		$.ajax({
+			type: "POST",
+			url: "./?ac=doTrackMultipleAWB",//doTrackStatus
+			data : {
+				key : "EN288430060XMY",
+				courier : courierID,
+				layout	: 0	},
+			success: function(result){
+				showResult(result);
+			}
+		});
+	}
+}
+
+function showResult(result){
+	setTimeout(function() {
+		//swal.close();
+		$('#loading1').html(result);
+		//$(result).appendTo($('#awb .panel.panel-default'));
+		//console.log($('#awb .panel.panel-default'));
+		$('#awbTotalResult').append("<div class='container-fluid text-center space-small'><button type='button'
+ class='btn btn-primary' value='Click To Back' onclick='"+'$("'+'#awb #selectCourier'+'").show();'+'$
+("'+'#AWBShow'+'").remove();'+'$("'+'#awb .panel-heading'+'").show();'+'$("'+'html,body'+'").animate
+({scrollTop:0},"slow");return false;'+"' ><i class='epi-left-1'></i> Click To Back</button></div>");
+
+	}, 500);
+}
+
+
+
+function TrackEmail(link,awb){
+	body=$(".sendEmail .body").html();
+	body=body.replace("senderMail", 'senderMail2');
+	body=body.replace("senderName", 'senderName2');
+	body=body.replace("receiverMail", 'receiverMail2');
+	body=body.replace("receiverName", 'receiverName2');
+	body=body.replace("emailMessage", 'emailMessage2');
+	body=body.replace("verifyHuman", 'verifyHuman2');
+	swal({
+		  title: 'Email This Shipment Status',
+		  text: "" + body,
+		  showCancelButton: true,
+		  confirmButtonColor: '#4e97d8',
+		  confirmButtonText: 'Okay',
+		  cancelButtonText: 'Cancel'
+			}).then(function() {
+				sendMail(link);
+			}, function(dismiss) {
+			  if (dismiss === 'cancel') {
+				$( this ).dialog( "close" );
+			  }
+		})
+}
+
+function sendMail(urlParam){
+	senderMail = ($("#senderMail2").val());
+	senderName = ($("#senderName2").val());
+	receiverMail = ($("#receiverMail2").val());
+	receiverName = ($("#receiverName2").val());
+	Username = ($("#Username").val());
+	Username2 = "8";
+	verifyHuman = ($("#verifyHuman2").val());
+	emailContent2 = urlParam;
+	if(Username == ""){
+		if(senderMail.trim()=="" || senderName.trim()=="" || receiverMail.trim()=="" || receiverName.trim(
+)==""){
+			swal({
+				title: 'Oops',
+				type: 'error',
+				html: 'Please Provide Your Details And Receiver Details.',
+				confirmButtonColor: '#4e97d8'
+				})
+		}else if(!ValidateEmail(senderMail)){
+			swal({
+				title: 'Oops',
+				type: 'error',
+				html: 'Sender Email Format Is Invalid',
+				confirmButtonColor: '#4e97d8'
+				})
+		}else if(!ValidateEmail(receiverMail)){
+			swal({
+				title: 'Oops',
+				type: 'error',
+				html: 'Receiver Email Format Is Invalid',
+				confirmButtonColor: '#4e97d8'
+				})
+		}else if(verifyHuman.trim()==""){
+			swal({
+				title: 'Oops',
+				type: 'error',
+				html: 'Please Fill In The Question Answer.',
+				confirmButtonColor: '#4e97d8'
+				})
+		}else{
+			if(verifyHuman == Username2){
+				var type = "post",
+				url = "./?ac=doSendTrackMail",
+				data = {
+					senderName : senderName,
+					sender : senderMail,
+					receiverName : receiverName,
+					receiver : receiverMail,
+					emailContent : emailContent2
+				},
+				callback = function(result){
+					if(result == "pass"){
+						swal({
+							title: 'Success',
+							type: 'success',
+							html: 'Your message has been sent.',
+							confirmButtonColor: '#4e97d8'
+							})
+						window.location.reload();
+					}else{
+						swal({
+							title: 'Oops',
+							type: 'error',
+							html: '' + result,
+							confirmButtonColor: '#4e97d8'
+							})
+						window.location.reload();
+					}
+				};
+				swal({
+					  title: 'Email This Shipment Status',
+					  text: '<div align="center"><b>Email Sending In Progress...</b></div>',
+					  showCancelButton: true,
+					  showConfirmButton: false,
+					  cancelButtonText: 'Cancel'
+						}).then(function() {
+							$( this ).dialog( "close" );
+						}, function(dismiss) {
+						  if (dismiss === 'cancel') {
+							$( this ).dialog( "close" );
+						  }
+					})
+				General.loadAjax(type,url,data,callback);
+			}else{
+				swal({
+					title: 'Oops',
+					type: 'error',
+					html: 'Wrong Answer.',
+					confirmButtonColor: '#4e97d8'
+					})
+			}
+		}
+	}else{
+		swal({
+			title: 'Oops',
+			type: 'error',
+			html: 'Invalid Access.',
+			confirmButtonColor: '#4e97d8'
+			})
+	}
+}
+
+function ValidateEmail(mail){  
+	if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)){  
+		return (true)
+	}  
+    return (false)  
+}
+
+
+</script>
